@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/rvsingh011/Alien-invasion/utils"
+	"github.com/rvsingh011/Alien-invasion/world"
 	"go.uber.org/zap"
 )
 
@@ -40,7 +41,7 @@ func init() {
 func main() {
 	// Init the logger, will only be used for debug messages
 	println("=========================================")
-	println("This is an Alien Invasion (Do Not Panic!)")
+	println("Starting the Alien Invasion")
 	println("=========================================")
 
 	// set the logger for debugging purposes
@@ -49,6 +50,7 @@ func main() {
 		fmt.Println("Unable to instintiate logger for the program: ", err.Error())
 		os.Exit(1)
 	}
+
 	defer logger.Sync()
 	logger.Debug("Starting a new alien invasion")
 
@@ -57,5 +59,19 @@ func main() {
 		fmt.Println("Invalid input given by user", err.Error())
 		os.Exit(1)
 	}
+
+	// create the world controller
+	simulation, err := world.NewSimulation(iterations, alienNumber, alienNames, worldFile)
+	if err != nil {
+		fmt.Println("Error Initiating a world: ", err.Error())
+		os.Exit(1)
+	}
+
+	// view the world once intialized
+	simulation.ViewWorld()
+
+	// create aliens
+	simulation.CreateAliens()
+	simulation.ViewAliens()
 
 }
