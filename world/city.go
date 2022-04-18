@@ -1,8 +1,9 @@
 package world
 
 type City struct {
-	Name      string
-	Direction string
+	Name              string
+	Direction         string
+	CurrentAlienIndex []string
 }
 
 func NewCity(cityName string) *City {

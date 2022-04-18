@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math/rand"
 	"os"
+	"time"
 
 	"github.com/rvsingh011/Alien-invasion/utils"
 	"github.com/rvsingh011/Alien-invasion/world"
@@ -60,18 +62,24 @@ func main() {
 		os.Exit(1)
 	}
 
-	// create the world controller
-	simulation, err := world.NewSimulation(iterations, alienNumber, alienNames, worldFile)
+	// Create the Seed for the psedudo random genrator
+	randomSeed := buildSeed()
+
+	// create the simulation for the alien invasion
+	simulation, err := world.NewSimulation(iterations, alienNumber, alienNames, worldFile, randomSeed)
 	if err != nil {
 		fmt.Println("Error Initiating a world: ", err.Error())
 		os.Exit(1)
 	}
-
-	// view the world once intialized
 	simulation.ViewWorld()
-
-	// create aliens
 	simulation.CreateAliens()
 	simulation.ViewAliens()
+	simulation.Start()
 
+}
+
+func buildSeed() *rand.Rand {
+	seed := time.Now().UnixNano()
+	source := rand.NewSource(seed)
+	return rand.New(source)
 }
