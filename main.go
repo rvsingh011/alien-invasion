@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"time"
 
 	"github.com/rvsingh011/Alien-invasion/utils"
 	"github.com/rvsingh011/Alien-invasion/world"
@@ -66,7 +65,7 @@ func main() {
 	randomSeed := buildSeed()
 
 	// create the simulation for the alien invasion
-	simulation, err := world.NewSimulation(iterations, alienNumber, alienNames, worldFile, randomSeed)
+	simulation, err := world.NewSimulation(iterations, alienNumber, alienNames, worldFile, randomSeed, logger)
 	if err != nil {
 		fmt.Println("Error Initiating a world: ", err.Error())
 		os.Exit(1)
@@ -75,11 +74,13 @@ func main() {
 	simulation.CreateAliens()
 	simulation.ViewAliens()
 	simulation.Start()
+	simulation.EndAndConclude()
 
 }
 
 func buildSeed() *rand.Rand {
-	seed := time.Now().UnixNano()
+	// seed := time.Now().UnixNano()
+	var seed int64 = 4
 	source := rand.NewSource(seed)
 	return rand.New(source)
 }
