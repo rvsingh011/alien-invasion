@@ -1,4 +1,4 @@
-package world
+package simulation
 
 type City struct {
 	Name      string

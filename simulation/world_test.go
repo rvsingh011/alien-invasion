@@ -1,4 +1,4 @@
-package world
+package simulation
 
 import (
 	"math/rand"
@@ -89,7 +89,7 @@ func TestSimulation_CreateWorld(t *testing.T) {
 		{
 			name: "Test with world example 1",
 			fields: fields{
-				WorldFile: "../data/world.txt",
+				WorldFile: "../data/world-example-1.txt",
 				World:     make(map[string][]*City),
 			},
 			wantErr:            false,
@@ -106,7 +106,7 @@ func TestSimulation_CreateWorld(t *testing.T) {
 		{
 			name: "Test with world example 2",
 			fields: fields{
-				WorldFile: "../data/world.txt",
+				WorldFile: "../data/world-example-1.txt",
 				World:     make(map[string][]*City),
 			},
 			wantErr:            false,

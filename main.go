@@ -6,8 +6,8 @@ import (
 	"math/rand"
 	"os"
 
+	"github.com/rvsingh011/Alien-invasion/simulation"
 	"github.com/rvsingh011/Alien-invasion/utils"
-	"github.com/rvsingh011/Alien-invasion/world"
 	"go.uber.org/zap"
 )
 
@@ -19,7 +19,7 @@ const (
 	// AlienNames default file if not specified
 	AlienNames = "./data/alien_names.txt"
 	// CitiesFiles used if not specified
-	WorldFile = "./data/world.txt"
+	WorldFile = "./data/world-example-1.txt"
 	// Default log level is info
 	LogLevel = "info"
 )
@@ -65,11 +65,12 @@ func main() {
 	randomSeed := buildSeed()
 
 	// create the simulation for the alien invasion
-	simulation, err := world.NewSimulation(iterations, alienNumber, alienNames, worldFile, randomSeed, logger)
+	simulation, err := simulation.NewSimulation(iterations, alienNumber, alienNames, worldFile, randomSeed, logger)
 	if err != nil {
 		fmt.Println("Error Initiating a world: ", err.Error())
 		os.Exit(1)
 	}
+	simulation.CreateWorld()
 	simulation.ViewWorld()
 	simulation.CreateAliens()
 	simulation.ViewAliens()

@@ -1,4 +1,4 @@
-package world
+package simulation
 
 import (
 	"bufio"
@@ -51,7 +51,6 @@ func NewSimulation(iterations, alienNumbers int, alienNames, worldFile string, r
 		RandSeed:         randomSeed,
 		logger:           logger,
 	}
-	simulation.CreateWorld()
 	return &simulation, nil
 }
 
@@ -268,7 +267,7 @@ func (sim *Simulation) runNextRoundOfAttack() {
 
 		// maxIndex == len(sim.World[alienCurrentCity]) denoted no move by the alien.
 		if newCityIndex == maxIndex {
-			fmt.Printf("The alien %s is decided to stay in %s city\n", sim.Aliens[idx].Name, alienCurrentCity)
+			fmt.Printf("The alien %s decided to stay in %s city\n", sim.Aliens[idx].Name, alienCurrentCity)
 			continue
 		}
 
