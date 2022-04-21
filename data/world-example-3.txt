@@ -1,0 +1,7 @@
+uber south=jabra
+amazon west=ola east=lg south=samsung
+samsung north=amazon east=hp west=uber
+jabra north=uber
+apple south=redmi
+boing north=hp south=panda
+panda north=boing
