@@ -42,7 +42,7 @@ func init() {
 func main() {
 	// Init the logger, will only be used for debug messages
 	println("=========================================")
-	println("Starting the Alien Invasion")
+	println("Starting the Alien Invasion Simulation")
 	println("=========================================")
 
 	// set the logger for debugging purposes
@@ -53,7 +53,6 @@ func main() {
 	}
 
 	defer logger.Sync()
-	logger.Debug("Starting a new alien invasion")
 
 	// Validte the user input
 	if err := utils.ValidateInput(iterations, alienNumber, alienNames, worldFile); err != nil {

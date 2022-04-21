@@ -11,34 +11,40 @@ import (
 	"go.uber.org/zap"
 )
 
+/*
+	Simulation hold the data for the simualtion.
+*/
 type Simulation struct {
 	Iterations     int
 	WorldFile      string
 	NumberOfAliens int
 	AlienNames     string
 
-	// All cities detailed map for the planet
+	// All cities detailed map for the planet, this includes all cities and its roads
 	World map[string][]*City
 
-	// List of all selected aliens who are selected for the mission Death
+	// List of all selected aliens who are selected for the mission "Death"
 	Aliens []*Alien
 
-	// List of all cities on the target planet
+	// List of all cities on the target planet, this does not include the roads
 	Cities []*City
 
-	// Alien Commandar record for deployed aliens
+	// Alien Commandar record for deployed aliens, represent which alien is currently in which city
 	AlienCityMapping map[string]string
 
-	// City Command Center record to current aliens in the city
+	// united nations defense record, tracks and records which city is under attack by which alien
 	CityAlienMapping map[string][]string
 
-	// Record the attack vector for future generation in a seed
+	// Record the attack vector for future generation or run simulations
 	RandSeed *rand.Rand
 
-	// communication messages for future generation to read and learn
+	// communication messages for future generation to read and learn (not in use), but can be used for only listning a particular type of messages
 	logger *zap.Logger
 }
 
+/*
+	CreateWorld generate the world from the provided file
+*/
 func NewSimulation(iterations, alienNumbers int, alienNames, worldFile string, randomSeed *rand.Rand, logger *zap.Logger) (*Simulation, error) {
 	simulation := Simulation{
 		Iterations:       iterations,
@@ -54,6 +60,9 @@ func NewSimulation(iterations, alienNumbers int, alienNames, worldFile string, r
 	return &simulation, nil
 }
 
+/*
+	CreateWorld simulates the world from the provided world file.
+*/
 func (sim *Simulation) CreateWorld() error {
 	worldFile, err := os.Open(sim.WorldFile)
 	if err != nil {
@@ -105,6 +114,9 @@ func (sim *Simulation) CreateWorld() error {
 	return nil
 }
 
+/*
+	ViewWorld print the current status of the world, print out the city layout in human readable format
+*/
 func (sim *Simulation) ViewWorld() string {
 
 	println("=========================================")
@@ -121,6 +133,9 @@ func (sim *Simulation) ViewWorld() string {
 	return world.String()
 }
 
+/*
+	CreateAliens simulated aliens which will be attacking the cities.
+*/
 func (sim *Simulation) CreateAliens() error {
 	alienNames, err := os.Open(sim.AlienNames)
 	if err != nil {
@@ -136,6 +151,9 @@ func (sim *Simulation) CreateAliens() error {
 	return nil
 }
 
+/*
+	ViewAliens prints all the aliens ready to run atatck the cities.
+*/
 func (sim *Simulation) ViewAliens() error {
 
 	println("=========================================")
@@ -148,6 +166,13 @@ func (sim *Simulation) ViewAliens() error {
 	return nil
 }
 
+/*
+	Start starts the simulations.
+	1. In first step each attack will randomly choose a city for attack.
+	2. After step 1 alien can only move to the left links to different city.
+	3. An alien can be trapped in a city in that case he stays in the same city.
+	4. An alien can also decide not to move and stay in the same city.
+*/
 func (sim *Simulation) Start() error {
 	for iteration := 1; iteration <= sim.Iterations; iteration++ {
 		// should the next iteration run ?
@@ -161,7 +186,6 @@ func (sim *Simulation) Start() error {
 		// if aliens just arrrived they need to prepare weapons and initiate the attack
 		if iteration == 1 {
 			sim.prepareAttack()
-			// fmt.Println("The aliens are now prepared and will attack continoulsy")
 		} else {
 			sim.runNextRoundOfAttack()
 		}
@@ -170,6 +194,10 @@ func (sim *Simulation) Start() error {
 	return nil
 }
 
+/*
+	fight simualtes the fight between aliens which arrived in the same city.
+	1. If more than one alien comes to same city, all aliens are destoyed with the city and its link.
+*/
 func (sim *Simulation) fight() {
 	deadAliens := make([]string, 0)
 	destoyedCities := make([]string, 0)
@@ -190,6 +218,9 @@ func (sim *Simulation) fight() {
 	sim.removeDestroyedCities(destoyedCities)
 }
 
+/*
+	burryDeadAliens simualtes the death of a alien.
+*/
 func (sim *Simulation) burryDeadAliens(deadAliens []string) {
 	for _, deadAlien := range deadAliens {
 		delete(sim.AlienCityMapping, deadAlien)
@@ -202,6 +233,9 @@ func (sim *Simulation) burryDeadAliens(deadAliens []string) {
 	}
 }
 
+/*
+	removeDestroyedCities simualtes a destroyed city.
+*/
 func (sim *Simulation) removeDestroyedCities(destoyedCities []string) {
 	for _, destroyedCity := range destoyedCities {
 		delete(sim.CityAlienMapping, destroyedCity)
@@ -215,6 +249,9 @@ func (sim *Simulation) removeDestroyedCities(destoyedCities []string) {
 	}
 }
 
+/*
+	deleteCityFromWorldMap simualtes a destroyed city removal from world map.
+*/
 func (sim *Simulation) deleteCityFromWorldMap(city string) {
 	for _, eachLinkedCity := range sim.World[city] {
 		for idx, eachLink := range sim.World[eachLinkedCity.Name] {
@@ -227,6 +264,11 @@ func (sim *Simulation) deleteCityFromWorldMap(city string) {
 	delete(sim.World, city)
 }
 
+/*
+	isNextIterationRequired checks if next iteraton of simulations is required.
+	1. if all cities are destoyed, stop the simulation.
+	2. if all aliens are dead, stop the simulations.
+*/
 func (sim *Simulation) isNextIterationRequired() bool {
 	if len(sim.Aliens) < 1 || len(sim.Cities) < 1 {
 		return false
@@ -234,6 +276,10 @@ func (sim *Simulation) isNextIterationRequired() bool {
 	return true
 }
 
+/*
+	prepareAttack simulates the arrival of alien.
+	1. In this step all aliens choose a city to attack.
+*/
 func (sim *Simulation) prepareAttack() {
 
 	// intialize the city Command Center record
@@ -252,6 +298,10 @@ func (sim *Simulation) prepareAttack() {
 	}
 }
 
+/*
+	runNextRoundOfAttack simulates the attack of alien after the intial round.
+	1. In this step all aliens either moves to a new city or stay in the same city, or get trapped in the city.
+*/
 func (sim *Simulation) runNextRoundOfAttack() {
 	// Aliens will choose a city conneted to the exsiting city
 	for idx := range sim.Aliens {
@@ -284,6 +334,9 @@ func (sim *Simulation) runNextRoundOfAttack() {
 	}
 }
 
+/*
+	EndAndConclude ends the simulations and print what is left of the world.
+*/
 func (sim *Simulation) EndAndConclude() string {
 	println("=========================================")
 	println("The Bloody war ended, these are the remins of the world")
