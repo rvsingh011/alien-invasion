@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"time"
 
 	"github.com/rvsingh011/alien-invasion/simulation"
 	"github.com/rvsingh011/alien-invasion/utils"
@@ -79,8 +80,7 @@ func main() {
 }
 
 func buildSeed() *rand.Rand {
-	// seed := time.Now().UnixNano()
-	var seed int64 = 4
+	seed := time.Now().UnixNano()
 	source := rand.NewSource(seed)
 	return rand.New(source)
 }
