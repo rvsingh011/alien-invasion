@@ -1,5 +1,8 @@
 package simulation
 
+/*
+	City simulates a city in world.
+*/
 type City struct {
 	Name      string
 	Direction string
