@@ -1,4 +1,4 @@
-module github.com/rvsingh011/Alien-invasion
+module github.com/rvsingh011/alien-invasion
 
 go 1.17
 

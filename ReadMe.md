@@ -6,7 +6,7 @@ The simulator is written in golang.
 
 ## Build and Run 
 
-To run the `Alien-invasion` have a [working Golang environment](https://golang.org/doc/install) installed. If you are all set, just run the following:
+To run the `alien-invasion` have a [working Golang environment](https://golang.org/doc/install) installed. If you are all set, just run the following:
 
 ```
 $ go run main.go
@@ -42,6 +42,7 @@ $ go test ./... -v
 3. If more than one alien are found at the city. The City will be destroyed and all the alien names will be printed. 
 4. Only 4 directions are valid, east west and north south. 
 5. The city roads are two way path. If City X is connected to City Y, this implies city Y will also be connected to City X.  
+6. The code autocompletes the paths for the cities so you may see infomation which is not diretly given by user but is implied. For example, If user just gives a link between the city X and Y, Automatically the link between city Y and X will be maade. 
 
 
 

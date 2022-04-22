@@ -6,8 +6,8 @@ import (
 	"math/rand"
 	"os"
 
-	"github.com/rvsingh011/Alien-invasion/simulation"
-	"github.com/rvsingh011/Alien-invasion/utils"
+	"github.com/rvsingh011/alien-invasion/simulation"
+	"github.com/rvsingh011/alien-invasion/utils"
 	"go.uber.org/zap"
 )
 
