@@ -42,7 +42,7 @@ func ValidateInput(iterations, alienNumbers int, alienNames, worldFile string) e
 		return fmt.Errorf("Unable to count alien names: %s", err.Error())
 	}
 	if numberOfAlienNames < alienNumbers {
-		return fmt.Errorf("Alien name file should atleast contains names equal to number of alient specified")
+		return fmt.Errorf("There is a 1:1 mapping between alien name and number of aliens, the number of alien names should be greater than or equal to the number of aliens specified. Number of alines specified: %d, Number of names found: %d", alienNumbers, numberOfAlienNames)
 	}
 	// TODO: Create a advanced validator by parsing the format
 	if _, err := os.ReadFile(worldFile); err != nil {

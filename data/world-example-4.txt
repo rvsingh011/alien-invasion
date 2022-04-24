@@ -1,0 +1,8 @@
+america
+Foo west=bax south=qu-ux
+bax east=Foo south=abc north=xyz
+qu-ux north=Foo
+brazil
+abc 
+xyz 
+mno

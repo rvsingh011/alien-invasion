@@ -42,7 +42,10 @@ $ go test ./... -v
 3. If more than one alien are found at the city. The City will be destroyed and all the alien names will be printed. 
 4. Only 4 directions are valid, east west and north south. 
 5. The city roads are two way path. If City X is connected to City Y, this implies city Y will also be connected to City X.  
-6. The code autocompletes the paths for the cities so you may see infomation which is not diretly given by user but is implied. For example, If user just gives a link between the city X and Y, Automatically the link between city Y and X will be maade. 
+6. The code autocompletes the paths for the cities so you may see infomation which is not diretly given by user but is implied. For example, If user just gives a link between the city X and Y, Automatically the link between city Y and X will be made. 
+7. There is a one to one mapping beween alien and name. Default file contains 424 alien names. If number of alein are more, please provide a new file or increase the number of name in the file. 
+
+
 
 
 

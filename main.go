@@ -57,7 +57,7 @@ func main() {
 
 	// Validte the user input
 	if err := utils.ValidateInput(iterations, alienNumber, alienNames, worldFile); err != nil {
-		fmt.Println("Invalid input given by user", err.Error())
+		fmt.Println("Invalid User Input, Reason: ", err.Error())
 		os.Exit(1)
 	}
 

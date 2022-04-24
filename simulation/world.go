@@ -74,7 +74,7 @@ func (sim *Simulation) CreateWorld() error {
 	scanner.Split(bufio.ScanLines)
 
 	for scanner.Scan() {
-		lineSplitOnSpace := strings.Split(scanner.Text(), " ")
+		lineSplitOnSpace := strings.Split(strings.TrimSpace(scanner.Text()), " ")
 		newCity := lineSplitOnSpace[0]
 
 		if _, ok := sim.World[newCity]; !ok {
@@ -84,7 +84,7 @@ func (sim *Simulation) CreateWorld() error {
 
 		lineSplitOnSpace = lineSplitOnSpace[1:]
 		for _, cityDir := range lineSplitOnSpace {
-			cityWithDirections := strings.Split(cityDir, "=")
+			cityWithDirections := strings.Split(strings.TrimSpace(cityDir), "=")
 			// if city already exists
 			isCityExist := false
 			for _, city := range sim.World[newCity] {
@@ -180,7 +180,7 @@ func (sim *Simulation) Start() error {
 			break
 		}
 		println("=========================================")
-		fmt.Printf("Running %d of Attack\n", iteration)
+		fmt.Printf("Running %d iteration of Attack\n", iteration)
 		println("=========================================")
 
 		// if aliens just arrrived they need to prepare weapons and initiate the attack
@@ -256,7 +256,6 @@ func (sim *Simulation) deleteCityFromWorldMap(city string) {
 	for _, eachLinkedCity := range sim.World[city] {
 		for idx, eachLink := range sim.World[eachLinkedCity.Name] {
 			if eachLink.Name == city {
-				fmt.Printf("Found the city %s in the depended city %s\n", eachLinkedCity, eachLink.Name)
 				sim.World[eachLinkedCity.Name] = append(sim.World[eachLinkedCity.Name][:idx], sim.World[eachLinkedCity.Name][idx+1:]...)
 			}
 		}
